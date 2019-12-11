@@ -1,0 +1,29 @@
+<div class="row">
+	<div class="col s12 space"></div>
+
+	<div id="wrapperEmail" class="col s12 center-align">
+		<label for="email">Escriba su correo electrónico</label>
+		<input id="email" type="email" placeholder="email@apretaste.org" required/>
+
+		<p><small>Le enviaremos un código a su correo</small></p>
+
+		<a class="btn waves-effect waves-light" href="#!" onclick="code()">
+			<i class="material-icons">arrow_forward</i>
+		</a>
+	</div>
+
+	<div id="wrapperCode" class="col s12 center-align hidden">
+		<label for="pin">Escriba su código</label><br/>
+		<input id="pin" type="number" maxlength="4" placeholder="1234" required/>
+
+		<p><small>Le enviamos el código a <span class="mail text-blue"></span></small></p>
+
+		<a class="btn waves-effect waves-light" href="#!" onclick="login()">
+			<i class="material-icons">send</i>
+		</a>
+
+		<br><br>
+
+		<a href="#!" onclick="apretaste.send({command:'LOGIN'})">Ir atrás</a>
+	</div>
+</div>

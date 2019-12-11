@@ -1,0 +1,8 @@
+{
+	"name": "login",
+	"description": "Inicia la sesión del usuario desde la web",
+	"category": "otros",
+	"creator": "salvi@apretaste.org",
+	"listed": false,
+	"guest": true
+}
