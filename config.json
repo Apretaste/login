@@ -1,5 +1,6 @@
 {
 	"name": "login",
+	"caption": "Inicio",
 	"description": "Inicia la sesión del usuario desde la web",
 	"category": "otros",
 	"creator": "salvi@apretaste.org",

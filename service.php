@@ -2,6 +2,7 @@
 
 use Framework\Database;
 use Framework\Security;
+use Framework\Core;
 use Apretaste\Email;
 use Apretaste\Request;
 use Apretaste\Response;

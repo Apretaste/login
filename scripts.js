@@ -14,9 +14,9 @@ function code() {
 
 	// send code via email
 	apretaste.send({
-		command:'LOGIN CODE', 
-		data:{'email':email}, 
-		redirect:false
+		command: 'LOGIN CODE',
+		data: {'email':email},
+		redirect: false
 	});
 
 	// ask user to insert code
@@ -42,7 +42,7 @@ function login() {
 	// send code via email
 	apretaste.send({
 		command:'LOGIN START',
-		data:{'email':email, 'pin':pin}, 
-		redirect:true
+		data: {'email':email, 'pin':pin},
+		redirect: true
 	});
 }
