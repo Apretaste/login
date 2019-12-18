@@ -1,7 +1,7 @@
 //
 // send code via email
 //
-function code() {
+function start() {
 	// get the email
 	var email = $('#email').val();
 
@@ -14,8 +14,8 @@ function code() {
 
 	// send code via email
 	apretaste.send({
-		command: 'LOGIN CODE',
-		data: {'email':email},
+		command: 'LOGIN START',
+		data: {'user':email},
 		redirect: false
 	});
 
@@ -28,7 +28,7 @@ function code() {
 //
 // login the user and get back to services
 //
-function login() {
+function code() {
 	// get the email and pin
 	var email = $('#email').val();
 	var pin = $('#pin').val();
@@ -39,10 +39,19 @@ function login() {
 		return false;
 	}
 
-	// send code via email
-	apretaste.send({
-		command:'LOGIN START',
-		data: {'email':email, 'pin':pin},
-		redirect: true
+	// create information string
+	var json = '{"command":"login code", "data":{"user":"'+email+'","pin":"'+pin+'"}}';
+	var href = '/web/' + btoa(json).replace(/=/g, '');
+
+	// send data via ajax
+	$.getJSON(href, function(data) {
+		if(data.error == 0) {
+			// if no errors, login and redirect to home
+			apretaste.send({command: 'SERVICIOS'});
+		} else {
+			// else display error
+			M.toast({html: 'Pin inválido. Revise su correo.'});
+			return false;
+		}
 	});
 }
