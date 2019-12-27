@@ -1,6 +1,5 @@
 <?php
 
-use Framework\Alert;
 use Framework\Database;
 use Framework\Security;
 use Framework\Core;
@@ -36,7 +35,12 @@ class Service
 
 		// validate the person's email
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			throw new Alert("500", "Login email '$email' is invalid");
+			return $response->setTemplate('message.ejs', [
+				"header" => "Correo inválido",
+				"icon" => "sentiment_very_dissatisfied",
+				"text" => "Lo sentimos, pero '$email' no parece ser un correo electrónico válido. Revise el correo e intente nuevamente.",
+				"button" => ["href" => "LOGIN", "caption" => "Reintentar"]
+			]);
 		}
 
 		// if person do not exist, create a new user
