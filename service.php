@@ -115,7 +115,10 @@ class Service
 	 */
 	public function _logout(Request $request, Response $response)
 	{
-		// logs out the user
+		// delete token
+		Database::query("UPDATE person SET token=NULL WHERE id={$request->person->id}");
+
+		// close the session (if open)
 		Security::logout();
 
 		// redirect to the list of services
