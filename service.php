@@ -59,7 +59,7 @@ class Service
 
 			// update the user pin if there's no pin active
 			Database::query("INSERT INTO person_code (email,pin) VALUES ('$email', $pin) 
-								 ON DUPLICATE UPDATE pin = $pin, pin_date = CURRENT_TIMESTAMP;");
+								 ON DUPLICATE KEY UPDATE pin = $pin, pin_date = CURRENT_TIMESTAMP;");
 		}
 
 		// prepare message
