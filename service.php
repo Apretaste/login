@@ -91,10 +91,15 @@ class Service
 	{
 		// get params from the request
 		$email = $request->input->data->user;
-		$pin = $request->input->data->pin;
+
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			return $response->setContent(['error' => '1', 'token' => '']);
+		}
+
+		$pin = (int) $request->input->data->pin;
 
 		// search for pin
-		$check = Database::query("SELECT pin, pin_date, TIMESTAMPDIFF(MINUTE, pin_date, NOW()) AS minutes_left FROM person_code WHERE email='$email' AND TIMESTAMPDIFF(HOUR, pin_date, NOW())<1");
+		$check = Database::query("SELECT pin, pin_date, TIMESTAMPDIFF(MINUTE, pin_date, NOW()) AS minutes_left FROM person_code WHERE pin = $pin AND email='$email' AND TIMESTAMPDIFF(HOUR, pin_date, NOW())<1");
 
 		if (empty($check)) {
 			return $response->setContent(['error' => '1', 'token' => '']);
