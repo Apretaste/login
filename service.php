@@ -25,8 +25,8 @@ class Service
 	/**
 	 * Send the code to the user via email
 	 *
-	 * @param  \Apretaste\Request  $request
-	 * @param  \Apretaste\Response  $response
+	 * @param \Apretaste\Request $request
+	 * @param \Apretaste\Response $response
 	 *
 	 * @return \Apretaste\Response
 	 * @throws \Framework\Alert
@@ -46,6 +46,9 @@ class Service
 				'button' => ['href' => 'LOGIN', 'caption' => 'Reintentar']
 			]);
 		}
+
+		// check valid domain
+		Security::checkDomain($email);
 
 		// check if there is a pin active in the last hour or create a new pin for the user
 		$pin = Database::query("SELECT pin, TIMESTAMPDIFF(MINUTE, pin_date, NOW()) AS minutes_left FROM person_code WHERE email='$email' AND TIMESTAMPDIFF(HOUR, pin_date, NOW())<1");
@@ -81,8 +84,8 @@ class Service
 	/**
 	 * Login using email/sms and code
 	 *
-	 * @param  \Apretaste\Request  $request
-	 * @param  \Apretaste\Response  $response
+	 * @param \Apretaste\Request $request
+	 * @param \Apretaste\Response $response
 	 *
 	 * @return \Apretaste\Response
 	 * @throws \Framework\Alert
@@ -135,8 +138,8 @@ class Service
 	/**
 	 * Logout a user
 	 *
-	 * @param  \Apretaste\Request  $request
-	 * @param  \Apretaste\Response  $response
+	 * @param \Apretaste\Request $request
+	 * @param \Apretaste\Response $response
 	 *
 	 * @throws \Framework\Alert
 	 */
