@@ -96,11 +96,11 @@ class Service
 			return $response->setContent(['error' => '1', 'token' => '']);
 		}
 
-		// get the person's token
-		$token = Database::query("SELECT token FROM person WHERE id = {$person->id}");
+		// get the user's token
+		$token = Database::queryFirst("SELECT token FROM person WHERE id = {$person->id}");
 
 		// return the user's token
-		return $response->setContent(['error' => '0', 'token' => $token]);
+		return $response->setContent(['error' => '0', 'token' => $token->token]);
 	}
 
 	/**
