@@ -78,7 +78,7 @@ class Service
 		$res = $sender->send();
 
 		// return JSON without template
-		$response->setContent(['code' => $pin]);
+		// $response->setContent(['code' => $pin]);
 	}
 
 	/**
