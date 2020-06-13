@@ -25,12 +25,10 @@ class Service
 	/**
 	 * Send the code to the user via email
 	 *
-	 * @param \Apretaste\Request $request
-	 * @param \Apretaste\Response $response
-	 *
-	 * @return \Apretaste\Response
-	 * @throws \Framework\Alert
-	 * @throws \Exception
+	 * @param Request $request
+	 * @param Response $response
+	 * @return Response
+	 * @throws Alert
 	 */
 	public function _start(Request $request, Response $response)
 	{
@@ -38,7 +36,7 @@ class Service
 		$email = $request->input->data->user;
 
 		// validate the person's email
-		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strpos($email, '+') !== false) {
 			return $response->setTemplate('message.ejs', [
 				'header' => 'Correo inválido',
 				'icon' => 'sentiment_very_dissatisfied',
@@ -61,21 +59,16 @@ class Service
 			$pin = random_int(1000, 9999);
 
 			// update the user pin if there's no pin active
-			Database::query("INSERT INTO person_code (email,pin) VALUES ('$email', $pin) 
-								 ON DUPLICATE KEY UPDATE pin = $pin, pin_date = CURRENT_TIMESTAMP;");
+			Database::query("
+				INSERT INTO person_code (email, pin) VALUES ('$email', $pin) 
+				ON DUPLICATE KEY UPDATE pin=$pin, pin_date=CURRENT_TIMESTAMP;");
 		}
 
-		// prepare message
-		$subject = "Su código es $pin";
-		$body = "Su código secreto es $pin, y sera válido durante los próximos $minutes_left minutos. Use este código para registrarse. Si usted no esperaba este código, elimine este mensaje. No comparta el código con nadie. Ningun representante nuestro le pedirá este código.";
-
-		// send the email with priority
+		// send the email
 		$sender = new Email();
-		$sender->service = 'login';
 		$sender->to = $email;
-		$sender->subject = $subject;
-		$sender->body = $body;
-		$res = $sender->send();
+		$sender->subject = "Su código es $pin";
+		$sender->sendFromTemplate(['code' => $pin, 'time_left' => $minutes_left], 'code');
 
 		// return JSON without template
 		// $response->setContent(['code' => $pin]);
@@ -84,64 +77,39 @@ class Service
 	/**
 	 * Login using email/sms and code
 	 *
-	 * @param \Apretaste\Request $request
-	 * @param \Apretaste\Response $response
-	 *
-	 * @return \Apretaste\Response
-	 * @throws \Framework\Alert
+	 * @param Request $request
+	 * @param Response $response
+	 * @return Response
+	 * @throws Alert
 	 */
 	public function _code(Request $request, Response $response)
 	{
 		// get params from the request
 		$email = $request->input->data->user;
-
-		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			return $response->setContent(['error' => '1', 'token' => '']);
-		}
-
 		$pin = (int) $request->input->data->pin;
-
-		// search for pin
-		$check = Database::query("SELECT pin, pin_date, TIMESTAMPDIFF(MINUTE, pin_date, NOW()) AS minutes_left FROM person_code WHERE pin = $pin AND email='$email' AND TIMESTAMPDIFF(HOUR, pin_date, NOW())<1");
-
-		if (empty($check)) {
-			return $response->setContent(['error' => '1', 'token' => '']);
-		}
-
-		// get the Person object
-		$person = Person::find($email);
-
-		// if email do not exist, create a new user
-		if (!$person) {
-			Person::new($email);
-		}
-
-		// update pin on person
-		// TODO: maybe it is temporal
-		Database::query("UPDATE person SET pin = $pin, pin_date = '{$check[0]->pin_date}' WHERE email = '$email';");
 
 		// login the person
 		$person = Security::loginViaPin($email, $pin);
 
-		// error if session can't be started
+		// error if pin is not correct
 		if (empty($person)) {
 			return $response->setContent(['error' => '1', 'token' => '']);
 		}
 
 		// get the user's token
-		$token = Database::query("SELECT token FROM person WHERE id='{$person->id}'");
+		$token = Database::queryFirst("SELECT token FROM person WHERE id = {$person->id}");
 
 		// return the user's token
-		return $response->setContent(['error' => '0', 'token' => $token[0]->token]);
+		return $response->setContent(['error' => '0', 'token' => $token->token]);
 	}
 
 	/**
 	 * Logout a user
 	 *
-	 * @param \Apretaste\Request $request
-	 * @param \Apretaste\Response $response
+	 * @param Request $request
+	 * @param Response $response
 	 *
-	 * @throws \Framework\Alert
+	 * @throws Alert
 	 */
 	public function _logout(Request $request, Response $response)
 	{
