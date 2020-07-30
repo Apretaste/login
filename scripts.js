@@ -47,7 +47,7 @@ function code() {
 	$.getJSON(href, function(data) {
 		if(data.error == 0) {
 			// if no errors, login and redirect to home
-			apretaste.send({command: 'SERVICIOS'});
+			apretaste.send({command: 'INICIO'});
 		} else {
 			// else display error
 			M.toast({html: 'Pin inválido. Revise su correo.'});
