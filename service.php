@@ -120,6 +120,6 @@ class Service
 		Security::logout();
 
 		// redirect to the list of services
-		Core::redirect('SERVICIOS');
+		Core::redirect('INICIO');
 	}
 }
