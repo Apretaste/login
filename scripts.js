@@ -1,11 +1,11 @@
-//
 // send code via email
-//
+
 function start() {
 	// get the email
 	var email = $('#email').val();
 
 	// validate the email
+
 	var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 	if (!filter.test(email)) {
 		M.toast({html: 'Email inválido'});
@@ -21,17 +21,19 @@ function start() {
 
 	// ask user to insert code
 	$('.mail').html(email);
-	$('#wrapperEmail').hide();
-	$('#wrapperCode').show();
+	$('.email-section').hide();
+	$('.code-section').show();
+
+	// add focus to code
+	$('#code').focus();
 }
 
-//
 // login the user and get back to services
-//
+
 function code() {
 	// get the email and pin
 	var email = $('#email').val();
-	var pin = $('#pin').val();
+	var pin = $('#code').val();
 
 	// validate the pin
 	if (pin.length != 4 || isNaN(pin)) {
@@ -55,3 +57,18 @@ function code() {
 		}
 	});
 }
+
+
+$(document).ready(function(){
+	// add focus to code
+	$('#email').focus();
+
+	// submit on Enter
+	$('input').keypress(function (e) {
+		if (e.which == 13) {
+			if(e.currentTarget.id == "email") start();
+			if(e.currentTarget.id == "code") code();
+			return false;
+		}
+	});
+})

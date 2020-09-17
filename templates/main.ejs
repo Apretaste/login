@@ -1,33 +1,45 @@
-<div class="row">
-	<div class="col s12 push-m2 m8 push-l3 l6 box">
-		<div class="icon circle">
-			<img src="/images/apretaste_icon_64x64.png" alt="Apretaste">
-		</div>
+<div class="row home">
+	<div class="col s12 center-align">
+		<span class="main-icon fa-stack fa-5x">
+			<i class="fas fa-circle fa-stack-2x green-text"></i>
+			<i class="fas fa-sign-in-alt fa-stack-1x fa-inverse"></i>
+		</span>
 
-		<p class="center-align">Inicie o cree una sesión para continuar</p>
+		<!-- EMAIL CONTROLS -->
 
-		<div id="wrapperEmail" class="input-field">
-			<label for="email">Escriba su correo electrónico</label>
+		<div class="input-field email-section">
 			<input id="email" type="email" required/>
-
-			<div class="center-align">
-				<p><small>Le enviaremos un código a su correo</small></p>
-				<a class="btn waves-effect waves-light" href="#!" onclick="start()">
-					<i class="material-icons">arrow_forward</i>
-				</a>
-			</div>
+			<label for="email">Escriba su correo electrónico</label>
+			<p class="grey-text">Le enviaremos un código a su correo</p>
 		</div>
 
-		<div id="wrapperCode" class="input-field hidden">
-			<label for="pin">Escriba su código</label><br/>
-			<input id="pin" type="number" required/>
+		<!-- CODE CONTROLS -->
 
-			<div class="center-align">
-				<p><small>Enviamos su código a <span class="mail text-blue"></span> [<a href="#!" onclick="apretaste.send({command:'LOGIN'})">cambiar</a>]</small></p>
-				<a class="btn waves-effect waves-light" href="#!" onclick="code()">
-					<i class="material-icons">send</i>
-				</a>
-			</div>
+		<div class="input-field hidden code-section">
+			<input id="code" type="number" max="9999" required/>
+			<label for="code">Escriba su código</label>
+			<p class="grey-text">Enviamos su código a <span class="mail"></span></p>
 		</div>
 	</div>
+</div>
+
+<div class="bottom-space"></div>
+
+<!-- EMAIL BUTTONS -->
+
+<div class="fixed-action-btn email-section">
+	<a class="btn-floating btn-large waves-effect waves-light green" href="#!" onclick="start()">
+		<i class="material-icons">send</i>
+	</a>
+</div>
+
+<!-- CODE BUTTONS -->
+
+<div class="fixed-action-btn code-section">
+	<a class="btn-floating waves-effect waves-light grey second" href="#!" onclick="apretaste.send({command:'LOGIN'})">
+		<i class="material-icons">arrow_back</i>
+	</a>
+	<a class="btn-floating btn-large waves-effect waves-light green" href="#!" onclick="code()">
+		<i class="material-icons">check</i>
+	</a>
 </div>
