@@ -69,9 +69,6 @@ class Service
 		$sender->to = $email;
 		$sender->subject = "Su código es $pin";
 		$sender->sendFromTemplate(['code' => $pin, 'time_left' => $minutes_left], 'code');
-
-		// return JSON without template
-		$response->setContent(['code' => $pin]);
 	}
 
 	/**
