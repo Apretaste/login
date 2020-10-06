@@ -42,7 +42,7 @@ function code() {
 	}
 
 	// create information string
-	var json = '{"command":"login code", "data":{"user":"'+email+'","pin":"'+pin+'"}}';
+	var json = '{"command":"LOGIN CODE", "data":{"user":"'+email+'","pin":"'+pin+'"}}';
 	var href = '/web/' + btoa(json).replace(/=/g, '');
 
 	// send data via ajax
@@ -57,7 +57,6 @@ function code() {
 		}
 	});
 }
-
 
 $(document).ready(function(){
 	// add focus to code

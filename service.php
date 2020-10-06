@@ -1,10 +1,10 @@
 <?php
 
+use Framework\Core;
 use Framework\Database;
 use Framework\Security;
-use Framework\Core;
-use Apretaste\Person;
 use Apretaste\Email;
+use Apretaste\Person;
 use Apretaste\Request;
 use Apretaste\Response;
 
@@ -71,7 +71,7 @@ class Service
 		$sender->sendFromTemplate(['code' => $pin, 'time_left' => $minutes_left], 'code');
 
 		// return JSON without template
-		// $response->setContent(['code' => $pin]);
+		$response->setContent(['code' => $pin]);
 	}
 
 	/**
