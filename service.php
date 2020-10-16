@@ -1,12 +1,13 @@
 <?php
 
-use Framework\Core;
-use Framework\Database;
-use Framework\Security;
-use Apretaste\Email;
 use Apretaste\Person;
 use Apretaste\Request;
 use Apretaste\Response;
+use Framework\Core;
+use Apretaste\Email;
+use Framework\Database;
+use Framework\Security;
+use Framework\GoogleAnalytics;
 
 class Service
 {
@@ -96,6 +97,9 @@ class Service
 		// get the user's token
 		$token = Database::queryFirst("SELECT token FROM person WHERE id = {$person->id}");
 
+		// submit to Google Analytics 
+		GoogleAnalytics::event('login', $person->id);
+
 		// return the user's token
 		return $response->setContent(['error' => '0', 'token' => $token->token]);
 	}
@@ -115,6 +119,9 @@ class Service
 
 		// close the session (if open)
 		Security::logout();
+
+		// submit to Google Analytics 
+		GoogleAnalytics::event('logout', $request->person->id);
 
 		// redirect to the list of services
 		Core::redirect('INICIO');
